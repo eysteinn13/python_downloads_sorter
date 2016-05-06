@@ -24,6 +24,7 @@ def sort(directory, show):
 def make_search_strings(inp):
     inp = inp.lower()
     l = []
+    l.append(inp)
     t = inp.replace(' ', '.')
     l.append(t)
     t = inp.replace(' ', '-')
