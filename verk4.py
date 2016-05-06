@@ -3,10 +3,17 @@ import os
 import shutil
 # from os.path import join as j
 def sort(directory, show):
+    search_strings = make_search_strings(show)
     if not os.path.exists(directory):
         os.makedirs(directory) # add directory
-        make_search_strings(show)
-        shutil.rmtree(directory) # remove directory
+        # shutil.rmtree(directory) # remove directory
+    for root, dirs, files in os.walk("downloads"):
+        for f in files:
+            tempF = f.lower()
+            for ST in search_strings:
+                if ST in tempF:
+                    print tempF
+
 
 # returns a list of a few generated search strings
 # E.g input = The Big Bang Theory
@@ -26,8 +33,8 @@ def make_search_strings(inp):
     t = inp.split(' ')
     t = ''.join([i[0] for i in t])
     l.append(t)
-
-    print l
     return l
 
-sort('shows', 'The Big Bang Theory')
+
+
+sort('shows', 'Come dine with me')
