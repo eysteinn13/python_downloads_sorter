@@ -18,9 +18,11 @@ def sort(directory, show):
                 if ST in f.lower():
                     shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('shows/'+ show, f)))
 
-
-
 def sort_folder(folderPath):
+
+
+
+
 # returns a list of a few generated search strings
 # E.g input = The Big Bang Theory
 #       returns thebigbangtheory
