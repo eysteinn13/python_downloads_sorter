@@ -7,14 +7,20 @@ def sort(directory, show):
     if not os.path.exists(directory):
         os.makedirs(directory) # add directory
         # shutil.rmtree(directory) # remove directory
+    os.chdir(directory)
+    if not os.path.exists(show):
+        os.makedirs(show)
+    os.chdir('..')
+
     for root, dirs, files in os.walk("downloads"):
         for f in files:
-            tempF = f.lower()
             for ST in search_strings:
-                if ST in tempF:
-                    print tempF
+                if ST in f.lower():
+                    shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('shows/'+ show, f)))
 
 
+
+def sort_folder(folderPath):
 # returns a list of a few generated search strings
 # E.g input = The Big Bang Theory
 #       returns thebigbangtheory
@@ -38,4 +44,4 @@ def make_search_strings(inp):
 
 
 
-sort('shows', 'Come dine with me')
+sort('shows', 'Come Dine With Me')
