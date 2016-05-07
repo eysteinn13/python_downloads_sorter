@@ -3,6 +3,9 @@ import os
 import shutil
 import errno
 from distutils import dir_util
+import pprint
+import re
+pp = pprint.PrettyPrinter(indent=4)
 # from os.path import join as j
 def sort(directory, show):
     search_strings = make_search_strings(show)
@@ -35,9 +38,18 @@ def sort(directory, show):
                         dest = os.path.abspath(os.path.join('shows/', root[ind:]))
                         if not os.path.exists(dest):
                             dir_util.copy_tree(src, dest)
+    sort_folder(directory, show)
 
-def sort_folder(folderPath):
-    pass
+def sort_folder(directory, show):
+    # Todo: remove duplicate files
+    tempList = []
+    for root, dirs, files in os.walk(directory + '/' + show):
+        for f in files:
+            if f in tempList:
+                os.remove(os.path.abspath(os.path.join(root, f)))
+            else:
+                tempList.append(f)
+    print(len(tempList))
 
 # returns a list of a few generated search strings
 # E.g input = The Big Bang Theory
