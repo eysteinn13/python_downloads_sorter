@@ -37,20 +37,20 @@ def sort(directory, show):
                         src = os.path.abspath(root)
                         dest = os.path.abspath(os.path.join(directory + '/' + show, root[ind:]))
                         if not os.path.exists(dest):
-                            print src
                             dir_util.copy_tree(src, dest)
     sort_folder(directory, show)
 
 def sort_folder(directory, show):
     # Todo: remove duplicate files
-    tempList = []
     for root, dirs, files in os.walk(directory + '/' + show):
-        for f in files:
-            # print f
-            if f in tempList:
-                os.remove(os.path.abspath(os.path.join(root, f)))
-            else:
-                tempList.append(f)
+        for d in dirs:
+            tempList = []
+            for f in files:
+                # print f
+                if f in tempList:
+                    os.remove(os.path.abspath(os.path.join(root, f)))
+                else:
+                    tempList.append(f)
     print(len(tempList))
 
 # returns a list of a few generated search strings
