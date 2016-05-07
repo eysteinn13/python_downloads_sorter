@@ -22,7 +22,7 @@ def sort(directory, show):
             if f == '.DS_Store':
                 break
             for ST in search_strings:
-                if ST in f.lower():
+                if ST in f.lower():# jaja
                     shutil.copyfile(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('shows/'+ show, f)))
                     # shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('shows/'+ show, f)))
                 else:
