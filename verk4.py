@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import shutil
+import errno
 # from os.path import join as j
 def sort(directory, show):
     search_strings = make_search_strings(show)
@@ -14,16 +15,26 @@ def sort(directory, show):
 
     for root, dirs, files in os.walk("downloads"):
         for f in files:
+            if f == '.DS_Store':
+                break
             for ST in search_strings:
                 if ST in f.lower():
                     shutil.copyfile(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('shows/'+ show, f)))
                     # shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('shows/'+ show, f)))
                 elif ST in root.lower():
-                    print root
-
+                    ind = root.lower().index(ST)
+                    for i in range(root.lower().index(ST), 8, -1):
+                        if root[i] == '/':
+                            ind = i
+                            break
+                    ind += 1
+                    src = os.path.abspath(root)
+                    dest = os.path.abspath(os.path.join('shows/', root[ind:]))
+                    shutil.copytree(src, dest)
 
 def sort_folder(folderPath):
     pass
+
 # returns a list of a few generated search strings
 # E.g input = The Big Bang Theory
 #       returns thebigbangtheory
@@ -45,6 +56,15 @@ def make_search_strings(inp):
     # l.append(t)
     return l
 
+#Found on StackOverflow
+def copytree(src, dst, symlinks=False, ignore=None):
+    for item in os.listdir(src):
+        s = os.path.join(src, item)
+        d = os.path.join(dst, item)
+        if os.path.isdir(s):
+            shutil.copytree(s, d, symlinks, ignore)
+        else:
+            shutil.copy2(s, d)
 
 
 sort('shows', 'Frasier')
