@@ -35,7 +35,7 @@ def sort(directory, show):
                                 break
                         ind += 1
                         src = os.path.abspath(root)
-                        dest = os.path.abspath(os.path.join('shows/', root[ind:]))
+                        dest = os.path.abspath(os.path.join(directory + '/' + show, root[ind:]))
                         if not os.path.exists(dest):
                             print src
                             dir_util.copy_tree(src, dest)
