@@ -37,6 +37,7 @@ def sort(directory, show):
                         src = os.path.abspath(root)
                         dest = os.path.abspath(os.path.join('shows/', root[ind:]))
                         if not os.path.exists(dest):
+                            print src
                             dir_util.copy_tree(src, dest)
     sort_folder(directory, show)
 
@@ -45,6 +46,7 @@ def sort_folder(directory, show):
     tempList = []
     for root, dirs, files in os.walk(directory + '/' + show):
         for f in files:
+            # print f
             if f in tempList:
                 os.remove(os.path.abspath(os.path.join(root, f)))
             else:
@@ -72,4 +74,4 @@ def make_search_strings(inp):
     # l.append(t)
     return l
 
-sort('shows', 'Frasier')
+sort('shows', 'House of cards')
