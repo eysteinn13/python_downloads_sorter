@@ -46,7 +46,7 @@ def sort_folder(directory, show):
         for d in dirs:
             tempList = []
             for f in files:
-                # print f
+                print(os.path.join(root, os.path.join(d,f)))
                 if f in tempList:
                     os.remove(os.path.abspath(os.path.join(root, f)))
                 else:
