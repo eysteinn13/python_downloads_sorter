@@ -2,6 +2,7 @@
 import os
 import shutil
 import errno
+from distutils import dir_util
 # from os.path import join as j
 def sort(directory, show):
     search_strings = make_search_strings(show)
@@ -21,16 +22,19 @@ def sort(directory, show):
                 if ST in f.lower():
                     shutil.copyfile(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('shows/'+ show, f)))
                     # shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('shows/'+ show, f)))
-                elif ST in root.lower():
-                    ind = root.lower().index(ST)
-                    for i in range(root.lower().index(ST), 8, -1):
-                        if root[i] == '/':
-                            ind = i
-                            break
-                    ind += 1
-                    src = os.path.abspath(root)
-                    dest = os.path.abspath(os.path.join('shows/', root[ind:]))
-                    shutil.copytree(src, dest)
+                else:
+                    if ST in root.lower():
+                        # cutta a rettum stad i pathinu
+                        ind = root.lower().index(ST)
+                        for i in range(root.lower().index(ST), 8, -1):
+                            if root[i] == '/':
+                                ind = i
+                                break
+                        ind += 1
+                        src = os.path.abspath(root)
+                        dest = os.path.abspath(os.path.join('shows/', root[ind:]))
+                        if not os.path.exists(dest):
+                            dir_util.copy_tree(src, dest)
 
 def sort_folder(folderPath):
     pass
@@ -55,16 +59,5 @@ def make_search_strings(inp):
     # t = ''.join([i[0] for i in t])
     # l.append(t)
     return l
-
-#Found on StackOverflow
-def copytree(src, dst, symlinks=False, ignore=None):
-    for item in os.listdir(src):
-        s = os.path.join(src, item)
-        d = os.path.join(dst, item)
-        if os.path.isdir(s):
-            shutil.copytree(s, d, symlinks, ignore)
-        else:
-            shutil.copy2(s, d)
-
 
 sort('shows', 'Frasier')
