@@ -11,7 +11,6 @@ def sort(directory, show):
     search_strings = make_search_strings(show)
     if not os.path.exists(directory):
         os.makedirs(directory) # add directory
-        # shutil.rmtree(directory) # remove directory
     os.chdir(directory)
     if not os.path.exists(show):
         os.makedirs(show)
@@ -46,8 +45,17 @@ def sort_folder(directory, show):
         for d in dirs:
             tempList = []
             for f in files:
-                print(os.path.join(root, os.path.join(d,f)))
-                if f in tempList:
+                if f == '.DS_Store':
+                    continue
+                season = find_season(os.path.join(d, f))
+                if season:
+                    season = str(season)
+                    if not os.path.exists(directory + '/' + show + '/Season ' + season):
+                        os.makedirs(directory + '/' + show + '/Season ' + season)
+                    src = os.path.abspath(os.path.join(root, f))
+                    dst = os.path.abspath(directory + '/' + show + '/Season ' + season)
+                    # shutil.move(src,dst)
+                if f in tempList: # file is already in current folder
                     os.remove(os.path.abspath(os.path.join(root, f)))
                 else:
                     tempList.append(f)
@@ -73,5 +81,31 @@ def make_search_strings(inp):
     # t = ''.join([i[0] for i in t])
     # l.append(t)
     return l
+
+def find_season(path):
+    # regex
+    # s09e02
+    # 2x03
+    # 02x03
+    # -----
+    # Season 2
+    # S2
+    # 403 -> season 4, ep 3
+
+    #p = re.compile('((S|s){1}(\d){2})|((\d){1,2}(x){1}(\d){1,2})|((Season){1})')
+    p = re.compile('((S|s){1}(\d){2})')
+    if p.search(path) != None:
+        found = p.search(path).group()
+        found = found[1:]
+        if found[0] != 0:
+            return int(found)
+        else:
+            return int(found[1])
+    p = re.compile('((\d){1,2}(x){1}(\d){1,2})')
+    return False
+
+
+# fall til ad removea filea sem enda ekki ekki a avi, mp4, o.fl
+
 
 sort('shows', 'House of cards')
