@@ -42,15 +42,17 @@ def sort(directory, show):
 
 def sort_folder(directory, show):
     # Todo: remove duplicate files
-    tempList = []
     for root, dirs, files in os.walk(directory + '/' + show):
-        for f in files:
-            # print f
-            season = find_season(os.path.join(root, f))
-            if f in tempList:
-                os.remove(os.path.abspath(os.path.join(root, f)))
-            else:
-                tempList.append(f)
+        for d in dirs:
+            tempList = []
+            for f in files:
+                # print f
+                season = find_season(os.path.join(d, f))
+                print season
+                if f in tempList:
+                    os.remove(os.path.abspath(os.path.join(root, f)))
+                else:
+                    tempList.append(f)
     print(len(tempList))
 
 # returns a list of a few generated search strings
@@ -75,7 +77,6 @@ def make_search_strings(inp):
     return l
 
 def find_season(path):
-    pass
     # regex
     # s09e02
     # 2x03
@@ -85,9 +86,19 @@ def find_season(path):
     # S2
     # 403 -> season 4, ep 3
 
-    p = re.compile('((S|s){1}(\d){2})|((\d){1,2}(x){1}(\d){1,2})|((Season){1})')
+    #p = re.compile('((S|s){1}(\d){2})|((\d){1,2}(x){1}(\d){1,2})|((Season){1})')
+    p = re.compile('((S|s){1}(\d){2})')
     if p.search(path) != None:
-        print path
+        found = p.search(path).group()
+        found = found[1:]
+        if found[0] != 0:
+            return int(found)
+        else:
+            return int(found[1])
+    p = re.compile('((\d){1,2}(x){1}(\d){1,2})')
+
+
+    return -1
 
 
 # fall til ad removea filea sem enda ekki ekki a avi, mp4, o.fl
