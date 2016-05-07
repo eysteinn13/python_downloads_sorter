@@ -45,6 +45,8 @@ def sort_folder(directory, show):
     tempList = []
     for root, dirs, files in os.walk(directory + '/' + show):
         for f in files:
+            # print f
+            season = find_season(os.path.join(root, f))
             if f in tempList:
                 os.remove(os.path.abspath(os.path.join(root, f)))
             else:
@@ -72,17 +74,23 @@ def make_search_strings(inp):
     # l.append(t)
     return l
 
-def make_season_strings(path):
+def find_season(path):
+    pass
     # regex
     # s09e02
     # 2x03
     # 02x03
+    # -----
     # Season 2
     # S2
     # 403 -> season 4, ep 3
+
+    p = re.compile('((S|s){1}(\d){2})|((\d){1,2}(x){1}(\d){1,2})|((Season){1})')
+    if p.search(path) != None:
+        print path
 
 
 # fall til ad removea filea sem enda ekki ekki a avi, mp4, o.fl
 
 
-sort('shows', 'Frasier')
+sort('shows', 'House of cards')
