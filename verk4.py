@@ -16,11 +16,14 @@ def sort(directory, show):
         for f in files:
             for ST in search_strings:
                 if ST in f.lower():
-                    shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('shows/'+ show, f)))
+                    print(ST)
+                    shutil.copyfile(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('shows/'+ show, f)))
+                    # shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('shows/'+ show, f)))
 
 
 
 def sort_folder(folderPath):
+    return 0
 # returns a list of a few generated search strings
 # E.g input = The Big Bang Theory
 #       returns thebigbangtheory
@@ -38,10 +41,10 @@ def make_search_strings(inp):
     t = inp.replace(' ', '')
     l.append(t)
     t = inp.split(' ')
-    t = ''.join([i[0] for i in t])
-    l.append(t)
+    # t = ''.join([i[0] for i in t])
+    # l.append(t)
     return l
 
 
 
-sort('shows', 'Come Dine With Me')
+sort('shows', 'Game of Thrones')
