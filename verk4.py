@@ -60,4 +60,17 @@ def make_search_strings(inp):
     # l.append(t)
     return l
 
+def make_season_strings(path):
+    # regex
+    # s09e02
+    # 2x03
+    # 02x03
+    # Season 2
+    # S2
+    # 403 -> season 4, ep 3
+
+
+# fall til ad removea filea sem enda ekki ekki a avi, mp4, o.fl
+
+
 sort('shows', 'Frasier')
