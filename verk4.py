@@ -21,6 +21,8 @@ def sort(directory, show):
         for f in files:
             if f.endswith('.mp3'):
                 shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('music/', f)))
+                # dir_util.copy_tree(os.path.abspath(root), os.path.abspath(os.path.join('music/', os.path.join(root, f))))
+                continue
             rar_pattern = re.compile('(\.){1}(r){1}(\d){2}$')
             if f.endswith('.txt') or f.endswith('.nfo') or f.endswith('.rar') or rar_pattern.search(f) != None:
                 os.remove(os.path.abspath(os.path.join(root, f)))
@@ -29,7 +31,8 @@ def sort(directory, show):
                 continue
             for ST in search_strings:
                 if ST in f.lower():
-                    shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('shows/'+ show, f)))
+                    shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join(directory + '/'+ show, f)))
+                    break
                 else:
                     if ST in root.lower():
                         # cutta a rettum stad i pathinu
