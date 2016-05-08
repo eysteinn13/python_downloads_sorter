@@ -8,6 +8,7 @@ import re
 pp = pprint.PrettyPrinter(indent=4)
 def sort(directory, show):
     search_strings = make_search_strings(show)
+    print search_strings
     if not os.path.exists(directory):
         os.makedirs(directory) # add directory
     os.chdir(directory)
@@ -18,7 +19,7 @@ def sort(directory, show):
     for root, dirs, files in os.walk("downloads"):
         for f in files:
             if f == '.DS_Store':
-                break
+                continue
             for ST in search_strings:
                 if ST in f.lower():
                     shutil.copyfile(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('shows/'+ show, f)))
@@ -64,14 +65,6 @@ def sort_folder(directory, show):
     # clear empty folders
     remove_path = os.path.abspath(directory + '/' + show)
     remove_empty_folders(remove_path)
-
-    # for root, dirs, files in os.walk(directory + '/' + show):
-    #     for d in dirs:
-    #         try:
-    #             os.rmdir(os.path.join(root, d))
-    #         except OSError as ex:
-    #             if ex.errno == errno.ENOTEMPTY:
-    #                 print 'Dir not empty, moving on.'
 # returns a list of a few generated search strings
 # E.g input = The Big Bang Theory
 #       returns thebigbangtheory
@@ -166,4 +159,4 @@ def find_season(path):
 # fall til ad removea filea sem enda ekki ekki a avi, mp4, o.fl
 
 
-sort('shows', 'That \'70s show')
+sort('shows', 'Game of thrones')
