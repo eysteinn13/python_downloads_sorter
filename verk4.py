@@ -40,14 +40,13 @@ def sort(directory, show):
     sort_folder(directory, show)
 
 def sort_folder(directory, show):
-    # Todo: remove duplicate files
     for root, dirs, files in os.walk(directory + '/' + show):
         for f in files:
             if f == '.DS_Store':
                 continue
             print f
             season = find_season(os.path.join(root, f))
-            if season:
+            if season: # move file to the correct folder
                 season = str(season)
                 if not os.path.exists(directory + '/' + show + '/Season ' + season):
                     os.makedirs(directory + '/' + show + '/Season ' + season)
@@ -55,6 +54,7 @@ def sort_folder(directory, show):
                 dst = os.path.abspath(directory + '/' + show + '/Season ' + season)
                 if not os.path.exists(directory + '/' + show + '/Season ' + season + '/' + f):
                     shutil.move(src,dst)
+            # if season could not be determined leave the file.
 # returns a list of a few generated search strings
 # E.g input = The Big Bang Theory
 #       returns thebigbangtheory
