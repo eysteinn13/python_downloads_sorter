@@ -2,8 +2,8 @@
 import os
 import shutil
 import errno
+from distutils import dir_util
 import sys
-from distutils import dir_util		
 import re
 def sort(directory, show):
     search_strings = make_search_strings(show)
@@ -19,14 +19,16 @@ def sort(directory, show):
     for root, dirs, files in os.walk("downloads"):
         for f in files:
             if f.endswith('.mp3'):
-                dir_util.copy_tree(src, dest)
                 shutil.copyfile(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('music/', f)))
+            if f.endswith('.txt') or f.endswith('.nfo') or f.endswith('.rar')):
+                os.remove(os.path.abspath(os.path.join(root, f)))
+                continue
             if f == '.DS_Store':
                 continue
             for ST in search_strings:
                 if ST in f.lower():
-                    shutil.copyfile(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('shows/'+ show, f)))
-                    # shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('shows/'+ show, f)))
+                    # shutil.copyfile(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join(directory + '/' + show, f)))
+                    shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('shows/'+ show, f)))
                 else:
                     if ST in root.lower():
                         # cutta a rettum stad i pathinu
@@ -40,6 +42,7 @@ def sort(directory, show):
                         dest = os.path.abspath(os.path.join(directory + '/' + show, root[ind:]))
                         if not os.path.exists(dest):
                             dir_util.copy_tree(src, dest)
+    remove_empty_folders(".")
     sort_folder(directory, show)
 
 def sort_folder(directory, show):
