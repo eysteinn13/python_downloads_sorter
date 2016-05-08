@@ -42,25 +42,19 @@ def sort(directory, show):
 def sort_folder(directory, show):
     # Todo: remove duplicate files
     for root, dirs, files in os.walk(directory + '/' + show):
-        for d in dirs:
-            tempList = []
-            for f in files:
-                if f == '.DS_Store':
-                    continue
-                season = find_season(os.path.join(d, f))
-                if season:
-                    season = str(season)
-                    if not os.path.exists(directory + '/' + show + '/Season ' + season):
-                        os.makedirs(directory + '/' + show + '/Season ' + season)
-                    src = os.path.abspath(os.path.join(root, f))
-                    dst = os.path.abspath(directory + '/' + show + '/Season ' + season)
-                    # shutil.move(src,dst)
-                if f in tempList: # file is already in current folder
-                    os.remove(os.path.abspath(os.path.join(root, f)))
-                else:
-                    tempList.append(f)
-    print(len(tempList))
-
+        for f in files:
+            if f == '.DS_Store':
+                continue
+            print f
+            season = find_season(os.path.join(root, f))
+            if season:
+                season = str(season)
+                if not os.path.exists(directory + '/' + show + '/Season ' + season):
+                    os.makedirs(directory + '/' + show + '/Season ' + season)
+                src = os.path.abspath(os.path.join(root, f))
+                dst = os.path.abspath(directory + '/' + show + '/Season ' + season)
+                if not os.path.exists(directory + '/' + show + '/Season ' + season + '/' + f):
+                    shutil.move(src,dst)
 # returns a list of a few generated search strings
 # E.g input = The Big Bang Theory
 #       returns thebigbangtheory
@@ -83,16 +77,15 @@ def make_search_strings(inp):
     return l
 
 def find_season(path):
-    # regex
-    # s09e02
-    # 2x03
-    # 02x03
+    # REGEX
+    # s09e02 - komid
+    # 2x03 - komid
+    # 02x03 - komid
+    # Season 2 - komid
+    # S2 - komid
     # -----
-    # Season 2
-    # S2
-    # 403 -> season 4, ep 3
+    # 403 -> season 4, ep 3 - gera tetta? meikar eiginlega ekki sens
 
-    #p = re.compile('((S|s){1}(\d){2})|((\d){1,2}(x){1}(\d){1,2})|((Season){1})')
     p = re.compile('((S|s){1}(\d){2})')
     if p.search(path) != None:
         found = p.search(path).group()
@@ -101,11 +94,41 @@ def find_season(path):
             return int(found)
         else:
             return int(found[1])
-    p = re.compile('((\d){1,2}(x){1}(\d){1,2})')
-    return False
 
+    p = re.compile('((\d){1,2}(x){1}(\d){1,2})')
+    if p.search(path) != None:
+        found = p.search(path).group()
+        found = found.lower()
+        index = found.index('x')
+        if index == 2:
+            if found[0] == '0':
+                return int(found[1])
+            else:
+                return int(found[0:2])
+        elif index == 1:
+            return int(found[0])
+
+    p = re.compile('(Season){1}(.)*(\d){1,2}')
+    if p.search(path) != None:
+        found = p.search(path).group()
+        found = found[-2:]
+        if found[0].isdigit() and found[0] != '0':
+            return int(found)
+        else:
+            return int(found[1])
+
+    p = re.compile('(S){1}(\d){1,2}')
+    if p.search(path) != None:
+        found = p.search(path).group()
+        found = found[1:]
+        if found[0] == '0':
+            return int(found[1])
+        else:
+            return int(found)
+
+    return False
 
 # fall til ad removea filea sem enda ekki ekki a avi, mp4, o.fl
 
 
-sort('shows', 'House of cards')
+sort('shows', 'That \'70s show')
