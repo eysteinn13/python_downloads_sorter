@@ -3,6 +3,7 @@ import os
 import shutil
 import errno
 import sys
+from distutils import dir_util		
 import re
 def sort(directory, show):
     search_strings = make_search_strings(show)
@@ -18,6 +19,7 @@ def sort(directory, show):
     for root, dirs, files in os.walk("downloads"):
         for f in files:
             if f.endswith('.mp3'):
+                dir_util.copy_tree(src, dest)
                 shutil.copyfile(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('music/', f)))
             if f == '.DS_Store':
                 continue
