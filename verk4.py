@@ -77,8 +77,10 @@ def sort_folder(directory, show):
                 dst = os.path.abspath(directory + '/' + show)
                 if not os.path.exists(directory + '/' + show + '/' + f):
                     shutil.move(src,dst)
+                    print 'hehe'
                 else :
-                    os.remove(os.path.abspath(os.path.join(root,f)))
+                    if os.path.abspath(directory + '/' + show + '/' + f) != os.path.abspath(os.path.join(root, f)):
+                        os.remove(os.path.abspath(os.path.join(root,f)))
     # clear empty folders
     remove_path = os.path.abspath(directory + '/' + show)
     remove_empty_folders(remove_path)
