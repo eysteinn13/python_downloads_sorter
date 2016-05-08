@@ -52,6 +52,8 @@ def sort_folder(directory, show):
                 dst = os.path.abspath(directory + '/' + show + '/Season ' + season)
                 if not os.path.exists(directory + '/' + show + '/Season ' + season + '/' + f):
                     shutil.move(src,dst)
+                else :
+                    os.remove(os.path.abspath(os.path.join(root,f)))
             else :
                 src = os.path.abspath(os.path.join(root, f))
                 dst = os.path.abspath(directory + '/' + show)
