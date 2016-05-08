@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import os
 import shutil
-import errno
 from distutils import dir_util
 import sys
 import re
@@ -24,7 +23,7 @@ def sort(directory, show):
             if f.endswith('.mp3'):
                 shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('All Music/', f)))
                 continue
-            if f.endswith('.jpg') or f.endswith('.png'):
+            if f.endswith('.jpg') or f.endswith('.png') or f.endswith('.jpeg') or f.endswith('.svg') or f.endswith('.gif'):
                 shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('All Images/', f)))
                 continue
             rar_pattern = re.compile('(\.){1}(r){1}(\d){2}$')
@@ -39,7 +38,7 @@ def sort(directory, show):
                     break
                 else:
                     if ST in root.lower():
-                        # cutta a rettum stad i pathinu
+                        # cut in the right place in the path
                         ind = root.lower().index(ST)
                         for i in range(root.lower().index(ST), 8, -1):
                             if root[i] == '/':
@@ -52,7 +51,7 @@ def sort(directory, show):
                             dir_util.copy_tree(src, dest)
                         os.remove(os.path.abspath(os.path.join(root,f)))
                         break
-    remove_empty_folders(".")
+    remove_empty_folders('.')
     sort_folder(directory, show)
 
 def sort_folder(directory, show):
@@ -85,34 +84,17 @@ def sort_folder(directory, show):
     remove_path = os.path.abspath(directory + '/' + show)
     remove_empty_folders(remove_path)
 
-#Got this from GitHub: https://gist.github.com/jacobtomlinson/9031697
-def remove_empty_folders(path, removeRoot=True):
-  if not os.path.isdir(path):
-    return
-  # remove empty subfolders
-  files = os.listdir(path)
-  if len(files):
-    for f in files:
-      fullpath = os.path.join(path, f)
-      if os.path.isdir(fullpath):
-        remove_empty_folders(fullpath)
-
-  # if folder empty, delete it
-  files = os.listdir(path)
-  if len(files) == 0 and removeRoot:
-    os.rmdir(path)
-
 def make_search_strings(inp):
     inp = inp.lower()
-    l = []
-    l.append(inp)
+    search_strings = []
+    search_strings.append(inp)
     t = inp.replace(' ', '.')
-    l.append(t)
+    search_strings.append(t)
     t = inp.replace(' ', '-')
-    l.append(t)
+    search_strings.append(t)
     t = inp.replace(' ', '')
-    l.append(t)
-    return l
+    search_strings.append(t)
+    return search_strings
 
 def find_season(path):
     # S02 | S2
@@ -150,5 +132,22 @@ def find_season(path):
             return int(found[1])
 
     return False
+
+# Got this from GitHub - Jacob Tom Linson: https://gist.github.com/jacobtomlinson/9031697
+def remove_empty_folders(path, removeRoot=True):
+  if not os.path.isdir(path):
+    return
+  # remove empty subfolders
+  files = os.listdir(path)
+  if len(files):
+    for f in files:
+      fullpath = os.path.join(path, f)
+      if os.path.isdir(fullpath):
+        remove_empty_folders(fullpath)
+
+  # if folder empty, delete it
+  files = os.listdir(path)
+  if len(files) == 0 and removeRoot:
+    os.rmdir(path)
 
 sort(sys.argv[1], sys.argv[2])
