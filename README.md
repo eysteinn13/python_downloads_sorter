@@ -7,7 +7,7 @@ and it will go through your downloads folder and move all episodes of Breaking B
 and sort them after seasons in a new folder called 'Shows'.
 If the script can not find the season of the episode the show will be stored in the root of the new folder.
 This could also be done with movies, for example to get all Lord of the rings movies together in one folder.
-
+If the downloads folder contains subtitle files for the episode/movie being looked for they are also moved to the correct place.
 When the script has found all matching episodes it removes all empty folders from the downloads directory.
 
 The script also moves all images and music files to folders called 'All Music' and 'All Images'
