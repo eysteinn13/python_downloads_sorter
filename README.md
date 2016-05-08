@@ -17,8 +17,8 @@ music and images.
 
 The script also removes all .txt, .rar, .nfo files found in the downloads folder.
 
- - Example usages
-  - ./folder_sorter Shows 'Game of Thrones'
-  - ./folder_sorter Movies 'Captain America'
-  - ./folder_sorter 'Bad movies' 'Bring it on'
-  - ./folder_sorter Homework 'Girl gone wild'
+Example usages
+ - ./folder_sorter Shows 'Game of Thrones'
+ - ./folder_sorter Movies 'Captain America'
+ - ./folder_sorter 'Bad movies' 'Bring it on'
+ - ./folder_sorter Homework 'Girl gone wild'
