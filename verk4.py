@@ -45,7 +45,6 @@ def sort_folder(directory, show):
         for f in files:
             if f == '.DS_Store':
                 continue
-            print f
             season = find_season(os.path.join(root, f))
             if season:
                 season = str(season)
@@ -108,7 +107,7 @@ def find_season(path):
         elif index == 1:
             return int(found[0])
 
-    p = re.compile('(Season){1}(.)*(\d){1,2}')
+    p = re.compile('Season{1}(.){1}(\d){1,2}')
     if p.search(path) != None:
         found = p.search(path).group()
         found = found[-2:]
