@@ -8,7 +8,6 @@ import re
 pp = pprint.PrettyPrinter(indent=4)
 def sort(directory, show):
     search_strings = make_search_strings(show)
-    print search_strings
     if not os.path.exists(directory):
         os.makedirs(directory) # add directory
     os.chdir(directory)
@@ -54,7 +53,8 @@ def sort_folder(directory, show):
                 if not os.path.exists(directory + '/' + show + '/Season ' + season + '/' + f):
                     shutil.move(src,dst)
                 else :
-                    os.remove(os.path.abspath(os.path.join(root,f)))
+                    if os.path.abspath(directory + '/' + show + '/Season ' + season + '/' + f) != os.path.abspath(os.path.join(root, f)):
+                        os.remove(os.path.abspath(os.path.join(root,f)))
             else :
                 src = os.path.abspath(os.path.join(root, f))
                 dst = os.path.abspath(directory + '/' + show)
