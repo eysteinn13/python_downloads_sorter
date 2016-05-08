@@ -20,7 +20,8 @@ def sort(directory, show):
         for f in files:
             if f.endswith('.mp3'):
                 shutil.copyfile(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('music/', f)))
-            if f.endswith('.txt') or f.endswith('.nfo') or f.endswith('.rar')):
+            rar_pattern = re.compile('(\.){1}(r){1}(\d){2}$')
+            if f.endswith('.txt') or f.endswith('.nfo') or f.endswith('.rar') or rar_pattern.search(f) != None:
                 os.remove(os.path.abspath(os.path.join(root, f)))
                 continue
             if f == '.DS_Store':
