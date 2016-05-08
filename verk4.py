@@ -10,8 +10,10 @@ def sort(directory, show):
     search_strings = make_search_strings(show)
     if not os.path.exists(directory):
         os.makedirs(directory)
-    if not os.path.exists('Music'):
-        os.makedirs('Music')
+    if not os.path.exists('All music'):
+        os.makedirs('All Music')
+    if not os.path.exists('All Images'):
+        os.makedirs('All Images')
     os.chdir(directory)
     if not os.path.exists(show):
         os.makedirs(show)
@@ -20,7 +22,10 @@ def sort(directory, show):
     for root, dirs, files in os.walk("downloads"):
         for f in files:
             if f.endswith('.mp3'):
-                shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('music/', f)))
+                shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('All Music/', f)))
+                continue
+            if f.endswith('.jpg') or f.endswith('.png'):
+                shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('All Images/', f)))
                 continue
             rar_pattern = re.compile('(\.){1}(r){1}(\d){2}$')
             if f.endswith('.txt') or f.endswith('.nfo') or f.endswith('.rar') or rar_pattern.search(f) != None:
