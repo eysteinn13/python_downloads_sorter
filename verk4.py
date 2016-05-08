@@ -60,19 +60,40 @@ def sort_folder(directory, show):
                 else :
                     os.remove(os.path.abspath(os.path.join(root,f)))
     # clear empty folders
-    for root, dirs, files in os.walk(directory + '/' + show):
-        for d in dirs:
-            try:
-                os.rmdir(os.path.join(root, d))
-            except OSError as ex:
-                if ex.errno == errno.ENOTEMPTY:
-                    print 'Dir not empty, moving on.'
+    remove_path = os.path.abspath(directory + '/' + show)
+    remove_empty_folders(remove_path)
+
+    # for root, dirs, files in os.walk(directory + '/' + show):
+    #     for d in dirs:
+    #         try:
+    #             os.rmdir(os.path.join(root, d))
+    #         except OSError as ex:
+    #             if ex.errno == errno.ENOTEMPTY:
+    #                 print 'Dir not empty, moving on.'
 # returns a list of a few generated search strings
 # E.g input = The Big Bang Theory
 #       returns thebigbangtheory
 #               tbbt
 #               the.big.bang.theory
 #               the-big-bang-theory
+
+#Got this from GitHub: https://gist.github.com/jacobtomlinson/9031697
+def remove_empty_folders(path, removeRoot=True):
+  if not os.path.isdir(path):
+    return
+  # remove empty subfolders
+  files = os.listdir(path)
+  if len(files):
+    for f in files:
+      fullpath = os.path.join(path, f)
+      if os.path.isdir(fullpath):
+        remove_empty_folders(fullpath)
+
+  # if folder empty, delete it
+  files = os.listdir(path)
+  if len(files) == 0 and removeRoot:
+    os.rmdir(path)
+
 def make_search_strings(inp):
     inp = inp.lower()
     l = []
