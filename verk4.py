@@ -6,7 +6,6 @@ from distutils import dir_util
 import pprint
 import re
 pp = pprint.PrettyPrinter(indent=4)
-# from os.path import join as j
 def sort(directory, show):
     search_strings = make_search_strings(show)
     if not os.path.exists(directory):
@@ -21,7 +20,7 @@ def sort(directory, show):
             if f == '.DS_Store':
                 break
             for ST in search_strings:
-                if ST in f.lower():# jaja
+                if ST in f.lower():
                     shutil.copyfile(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('shows/'+ show, f)))
                     # shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('shows/'+ show, f)))
                 else:
@@ -53,7 +52,21 @@ def sort_folder(directory, show):
                 dst = os.path.abspath(directory + '/' + show + '/Season ' + season)
                 if not os.path.exists(directory + '/' + show + '/Season ' + season + '/' + f):
                     shutil.move(src,dst)
-            # if season could not be determined leave the file.
+            else :
+                src = os.path.abspath(os.path.join(root, f))
+                dst = os.path.abspath(directory + '/' + show)
+                if not os.path.exists(directory + '/' + show + '/' + f):
+                    shutil.move(src,dst)
+                else :
+                    os.remove(os.path.abspath(os.path.join(root,f)))
+    # clear empty folders
+    for root, dirs, files in os.walk(directory + '/' + show):
+        for d in dirs:
+            try:
+                os.rmdir(os.path.join(root, d))
+            except OSError as ex:
+                if ex.errno == errno.ENOTEMPTY:
+                    print 'Dir not empty, moving on.'
 # returns a list of a few generated search strings
 # E.g input = The Big Bang Theory
 #       returns thebigbangtheory
