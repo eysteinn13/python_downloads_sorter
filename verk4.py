@@ -5,6 +5,7 @@ import errno
 from distutils import dir_util
 import sys
 import re
+
 def sort(directory, show):
     search_strings = make_search_strings(show)
     if not os.path.exists(directory):
@@ -100,21 +101,20 @@ def make_search_strings(inp):
     l.append(t)
     t = inp.replace(' ', '')
     l.append(t)
-    t = inp.split(' ')
-    # t = ''.join([i[0] for i in t])
-    # l.append(t)
     return l
 
 def find_season(path):
-    p = re.compile('((S|s){1}(\d){2})')
+    # S02 | S2
+    p = re.compile('((S|s){1}(\d){1,2})')
     if p.search(path) != None:
         found = p.search(path).group()
         found = found[1:]
-        if found[0] != 0:
-            return int(found)
-        else:
+        if found[0] == '0':
             return int(found[1])
+        else:
+            return int(found)
 
+    # 1x03 | 01x03
     p = re.compile('((\d){1,2}(x){1}(\d){1,2})')
     if p.search(path) != None:
         found = p.search(path).group()
@@ -128,6 +128,7 @@ def find_season(path):
         elif index == 1:
             return int(found[0])
 
+    # Season 2
     p = re.compile('Season{1}(.){1}(\d){1,2}')
     if p.search(path) != None:
         found = p.search(path).group()
@@ -137,16 +138,6 @@ def find_season(path):
         else:
             return int(found[1])
 
-    p = re.compile('(S){1}(\d){1,2}')
-    if p.search(path) != None:
-        found = p.search(path).group()
-        found = found[1:]
-        if found[0] == '0':
-            return int(found[1])
-        else:
-            return int(found)
-
     return False
 
-# fall til ad removea filea sem enda ekki ekki a avi, mp4, o.fl
 sort(sys.argv[1], sys.argv[2])
