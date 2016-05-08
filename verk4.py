@@ -2,21 +2,23 @@
 import os
 import shutil
 import errno
-from distutils import dir_util
-import pprint
+import sys
 import re
-pp = pprint.PrettyPrinter(indent=4)
 def sort(directory, show):
     search_strings = make_search_strings(show)
     if not os.path.exists(directory):
-        os.makedirs(directory) # add directory
+        os.makedirs(directory)
+    if not os.path.exists('Music'):
+        os.makedirs('Music')
     os.chdir(directory)
     if not os.path.exists(show):
         os.makedirs(show)
     os.chdir('..')
-
+    # change downloads to the dir you want to sort, maybe send this in as a param, or use current directory?
     for root, dirs, files in os.walk("downloads"):
         for f in files:
+            if f.endswith('.mp3'):
+                shutil.copyfile(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('music/', f)))
             if f == '.DS_Store':
                 continue
             for ST in search_strings:
@@ -65,12 +67,6 @@ def sort_folder(directory, show):
     # clear empty folders
     remove_path = os.path.abspath(directory + '/' + show)
     remove_empty_folders(remove_path)
-# returns a list of a few generated search strings
-# E.g input = The Big Bang Theory
-#       returns thebigbangtheory
-#               tbbt
-#               the.big.bang.theory
-#               the-big-bang-theory
 
 #Got this from GitHub: https://gist.github.com/jacobtomlinson/9031697
 def remove_empty_folders(path, removeRoot=True):
@@ -105,15 +101,6 @@ def make_search_strings(inp):
     return l
 
 def find_season(path):
-    # REGEX
-    # s09e02 - komid
-    # 2x03 - komid
-    # 02x03 - komid
-    # Season 2 - komid
-    # S2 - komid
-    # -----
-    # 403 -> season 4, ep 3 - gera tetta? meikar eiginlega ekki sens
-
     p = re.compile('((S|s){1}(\d){2})')
     if p.search(path) != None:
         found = p.search(path).group()
@@ -157,6 +144,4 @@ def find_season(path):
     return False
 
 # fall til ad removea filea sem enda ekki ekki a avi, mp4, o.fl
-
-
-sort('shows', 'Game of thrones')
+sort(sys.argv[1], sys.argv[2])
