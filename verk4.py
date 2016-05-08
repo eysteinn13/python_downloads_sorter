@@ -19,15 +19,15 @@ def sort(directory, show):
     for root, dirs, files in os.walk("downloads"):
         for f in files:
             if f.endswith('.mp3'):
-                shutil.copyfile(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('music/', f)))
-            if f.endswith('.txt') or f.endswith('.nfo') or f.endswith('.rar'):
+                shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('music/', f)))
+            rar_pattern = re.compile('(\.){1}(r){1}(\d){2}$')
+            if f.endswith('.txt') or f.endswith('.nfo') or f.endswith('.rar') or rar_pattern.search(f) != None:
                 os.remove(os.path.abspath(os.path.join(root, f)))
                 continue
             if f == '.DS_Store':
                 continue
             for ST in search_strings:
                 if ST in f.lower():
-                    # shutil.copyfile(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join(directory + '/' + show, f)))
                     shutil.move(os.path.abspath(os.path.join(root, f)), os.path.abspath(os.path.join('shows/'+ show, f)))
                 else:
                     if ST in root.lower():
